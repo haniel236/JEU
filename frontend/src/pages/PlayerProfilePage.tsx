@@ -12,18 +12,18 @@ import type { StatBucket } from '../types/index.js';
 function StatBlock({ title, stat }: { title: string; stat: StatBucket }) {
   return (
     <div className="card p-4">
-      <p className="mb-3 text-sm font-semibold text-slate-300">{title}</p>
+      <p className="mb-3 text-sm font-semibold text-slate-700">{title}</p>
       <div className="grid grid-cols-2 gap-3 text-center">
         <div>
-          <p className="text-2xl font-bold text-slate-100">{stat.played}</p>
+          <p className="text-2xl font-bold text-slate-900">{stat.played}</p>
           <p className="text-xs text-slate-500">Matchs</p>
         </div>
         <div>
-          <p className="text-2xl font-bold text-brand-400">{stat.winRate}%</p>
+          <p className="text-2xl font-bold text-brand-600">{stat.winRate}%</p>
           <p className="text-xs text-slate-500">Victoires</p>
         </div>
         <div>
-          <p className="text-lg font-semibold text-brand-400">{stat.wins}</p>
+          <p className="text-lg font-semibold text-brand-600">{stat.wins}</p>
           <p className="text-xs text-slate-500">Gagnés</p>
         </div>
         <div>
@@ -64,18 +64,18 @@ export function PlayerProfilePage() {
         <Avatar name={player.pseudo} src={player.photoUrl} size="xl" />
         <div className="text-center sm:text-left">
           <div className="flex items-center justify-center gap-2 sm:justify-start">
-            <h1 className="text-2xl font-bold text-slate-50">{player.pseudo}</h1>
+            <h1 className="text-2xl font-bold text-slate-900">{player.pseudo}</h1>
             {player.role === 'ADMIN' && (
-              <span className="badge bg-brand-500/15 text-brand-300">Admin</span>
+              <span className="badge bg-brand-500/15 text-brand-700">Admin</span>
             )}
           </div>
-          <p className="text-sm text-slate-400">{player.user.name}</p>
+          <p className="text-sm text-slate-600">{player.user.name}</p>
         </div>
         {player.rank && (
           <div className="sm:ml-auto flex items-center gap-2 rounded-xl bg-surface-800 px-4 py-2">
-            <Trophy className="h-5 w-5 text-brand-400" />
-            <span className="text-sm text-slate-400">Rang</span>
-            <span className="text-xl font-bold text-slate-100">#{player.rank}</span>
+            <Trophy className="h-5 w-5 text-brand-600" />
+            <span className="text-sm text-slate-600">Rang</span>
+            <span className="text-xl font-bold text-slate-900">#{player.rank}</span>
           </div>
         )}
       </div>
@@ -88,7 +88,7 @@ export function PlayerProfilePage() {
       </div>
 
       <div className="mt-6">
-        <h2 className="mb-3 text-lg font-semibold text-slate-100">Historique des matchs</h2>
+        <h2 className="mb-3 text-lg font-semibold text-slate-900">Historique des matchs</h2>
         {!matches?.items.length ? (
           <EmptyState icon={Trophy} title="Aucun match" description="Ce joueur n'a pas encore joué." />
         ) : (

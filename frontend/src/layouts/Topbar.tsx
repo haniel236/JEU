@@ -71,7 +71,7 @@ function GlobalSearch() {
                   className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm hover:bg-surface-800"
                 >
                   <Avatar name={p.pseudo} src={p.photoUrl} size="sm" />
-                  <span className="text-slate-200">{p.pseudo}</span>
+                  <span className="text-slate-800">{p.pseudo}</span>
                   <span className="ml-auto text-xs text-slate-500">{p.wins} V</span>
                 </button>
               ))}
@@ -82,7 +82,7 @@ function GlobalSearch() {
             <div className="mb-1">
               <p className="px-3 py-1 text-xs font-semibold uppercase text-slate-500">Équipes</p>
               {data.teams.map((t) => (
-                <div key={t} className="px-3 py-1.5 text-sm text-slate-300">
+                <div key={t} className="px-3 py-1.5 text-sm text-slate-700">
                   {t}
                 </div>
               ))}
@@ -93,9 +93,9 @@ function GlobalSearch() {
             <div>
               <p className="px-3 py-1 text-xs font-semibold uppercase text-slate-500">Matchs</p>
               {data.matches.slice(0, 6).map((m) => (
-                <div key={m.id} className="px-3 py-1.5 text-sm text-slate-300">
+                <div key={m.id} className="px-3 py-1.5 text-sm text-slate-700">
                   {m.player1.pseudo}{' '}
-                  <span className="font-semibold text-brand-400">
+                  <span className="font-semibold text-brand-600">
                     {m.score1}-{m.score2}
                   </span>{' '}
                   {m.player2.pseudo}
@@ -129,11 +129,11 @@ function NotificationBell() {
       {open && (
         <div className="card absolute right-0 z-30 mt-2 max-h-96 w-80 overflow-y-auto p-2 animate-scale-in">
           <div className="flex items-center justify-between px-3 py-2">
-            <p className="text-sm font-semibold text-slate-200">Notifications</p>
+            <p className="text-sm font-semibold text-slate-800">Notifications</p>
             <Link
               to={`/g/${groupId}/notifications`}
               onClick={() => setOpen(false)}
-              className="text-xs text-brand-400 hover:underline"
+              className="text-xs text-brand-600 hover:underline"
             >
               Tout voir
             </Link>
@@ -149,8 +149,8 @@ function NotificationBell() {
                 !n.read && 'bg-brand-500/5',
               )}
             >
-              <p className="font-medium text-slate-200">{n.title}</p>
-              <p className="text-xs text-slate-400">{n.message}</p>
+              <p className="font-medium text-slate-800">{n.title}</p>
+              <p className="text-xs text-slate-600">{n.message}</p>
               <p className="mt-0.5 text-[10px] text-slate-500">{relativeTime(n.createdAt)}</p>
             </div>
           ))}
@@ -174,7 +174,7 @@ function UserMenu() {
       {open && (
         <div className="card absolute right-0 z-30 mt-2 w-52 p-2 animate-scale-in">
           <div className="border-b border-surface-700 px-3 py-2">
-            <p className="truncate text-sm font-medium text-slate-200">{user?.name}</p>
+            <p className="truncate text-sm font-medium text-slate-800">{user?.name}</p>
             <p className="truncate text-xs text-slate-500">{user?.email}</p>
           </div>
           <button
@@ -182,7 +182,7 @@ function UserMenu() {
               setOpen(false);
               navigate('/select-group');
             }}
-            className="mt-1 flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-slate-300 hover:bg-surface-800"
+            className="mt-1 flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-slate-700 hover:bg-surface-800"
           >
             <UserCircle className="h-4 w-4" /> Mes groupes
           </button>

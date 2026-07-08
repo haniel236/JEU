@@ -102,7 +102,7 @@ export function RecordMatchPage() {
         <div className="grid gap-5 sm:grid-cols-2">
           {/* Joueur 1 */}
           <div className="space-y-3 rounded-xl border border-surface-700 bg-surface-850/50 p-4">
-            <p className="text-xs font-semibold uppercase text-brand-400">Joueur 1</p>
+            <p className="text-xs font-semibold uppercase text-brand-600">Joueur 1</p>
             <select
               value={player1Id}
               onChange={(e) => setPlayer1Id(e.target.value)}
@@ -125,7 +125,7 @@ export function RecordMatchPage() {
 
           {/* Joueur 2 */}
           <div className="space-y-3 rounded-xl border border-surface-700 bg-surface-850/50 p-4">
-            <p className="text-xs font-semibold uppercase text-brand-400">Joueur 2</p>
+            <p className="text-xs font-semibold uppercase text-brand-600">Joueur 2</p>
             <select
               value={player2Id}
               onChange={(e) => setPlayer2Id(e.target.value)}
@@ -150,7 +150,7 @@ export function RecordMatchPage() {
         {/* Score */}
         <div className="flex flex-col items-center gap-4 rounded-xl border border-surface-700 bg-surface-850/50 p-5 sm:flex-row sm:justify-center sm:gap-8">
           <ScoreStepper value={score1} onChange={setScore1} />
-          <span className="text-2xl font-bold text-slate-600">VS</span>
+          <span className="text-2xl font-bold text-slate-400">VS</span>
           <ScoreStepper value={score2} onChange={setScore2} />
         </div>
 
@@ -159,8 +159,8 @@ export function RecordMatchPage() {
             className={cn(
               'flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-medium',
               winnerHint === 'Match nul'
-                ? 'bg-surface-700 text-slate-300'
-                : 'bg-brand-500/10 text-brand-300',
+                ? 'bg-surface-700 text-slate-700'
+                : 'bg-brand-500/10 text-brand-700',
             )}
           >
             {winnerHint !== 'Match nul' && <Trophy className="h-4 w-4" />}

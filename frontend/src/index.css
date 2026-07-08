@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-    color-scheme: dark;
+    color-scheme: light;
   }
 
   html,
@@ -14,10 +14,10 @@
   }
 
   body {
-    @apply bg-surface-950 text-slate-200 font-sans antialiased;
+    @apply bg-surface-950 text-slate-700 font-sans antialiased;
     background-image:
-      radial-gradient(1200px 600px at 100% -10%, rgba(16, 176, 79, 0.12), transparent),
-      radial-gradient(900px 500px at -10% 20%, rgba(40, 201, 106, 0.08), transparent);
+      radial-gradient(1100px 600px at 100% -10%, rgba(18, 183, 106, 0.10), transparent),
+      radial-gradient(900px 520px at -10% 15%, rgba(50, 213, 131, 0.08), transparent);
     background-attachment: fixed;
   }
 
@@ -33,44 +33,44 @@
     background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    @apply bg-surface-700 rounded-full;
+    @apply bg-surface-600 rounded-full;
   }
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-surface-600;
+    @apply bg-brand-300;
   }
 }
 
 @layer components {
   .card {
-    @apply rounded-2xl border border-surface-700 bg-surface-900/70 backdrop-blur-sm shadow-lg;
+    @apply rounded-2xl border border-surface-700 bg-surface-900/90 backdrop-blur-sm shadow-card;
   }
 
   .card-hover {
-    @apply transition-all duration-200 hover:border-brand-600/60 hover:shadow-glow;
+    @apply transition-all duration-200 hover:-translate-y-0.5 hover:border-brand-400/60 hover:shadow-card-hover;
   }
 
   .btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all duration-150 disabled:cursor-not-allowed disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-brand-500/50;
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all duration-150 disabled:cursor-not-allowed disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-brand-500/40;
   }
   .btn-primary {
-    @apply btn bg-brand-500 text-surface-950 hover:bg-brand-400 shadow-glow;
+    @apply btn bg-brand-500 text-white hover:bg-brand-600 shadow-glow;
   }
   .btn-secondary {
-    @apply btn bg-surface-700 text-slate-100 hover:bg-surface-600;
+    @apply btn border border-surface-700 bg-surface-900 text-slate-700 hover:bg-surface-800;
   }
   .btn-ghost {
-    @apply btn bg-transparent text-slate-300 hover:bg-surface-800;
+    @apply btn bg-transparent text-slate-600 hover:bg-surface-800;
   }
   .btn-danger {
-    @apply btn bg-red-500/90 text-white hover:bg-red-500;
+    @apply btn bg-red-500 text-white hover:bg-red-600;
   }
 
   .input {
-    @apply w-full rounded-xl border border-surface-700 bg-surface-850 px-4 py-2.5 text-sm text-slate-100 placeholder:text-slate-500 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/30 transition;
+    @apply w-full rounded-xl border border-surface-700 bg-surface-900 px-4 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/25 transition;
   }
 
   .label {
-    @apply mb-1.5 block text-sm font-medium text-slate-300;
+    @apply mb-1.5 block text-sm font-medium text-slate-700;
   }
 
   .badge {
@@ -78,10 +78,10 @@
   }
 
   .nav-link {
-    @apply flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-slate-400 transition-colors hover:bg-surface-800 hover:text-slate-100;
+    @apply flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-slate-600 transition-colors hover:bg-surface-800 hover:text-slate-900;
   }
   .nav-link-active {
-    @apply bg-brand-500/10 text-brand-300;
+    @apply bg-brand-500/10 text-brand-700;
   }
 }
 
@@ -91,5 +91,5 @@
 .skeleton::after {
   content: '';
   @apply absolute inset-0 -translate-x-full animate-shimmer;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+  background: linear-gradient(90deg, transparent, rgba(16, 24, 40, 0.06), transparent);
 }

@@ -108,8 +108,8 @@ export function AdminPage() {
 
       {/* Invitation */}
       <div className="card p-5">
-        <h2 className="mb-3 flex items-center gap-2 text-lg font-semibold text-slate-100">
-          <UserCheck className="h-5 w-5 text-brand-400" /> Invitation
+        <h2 className="mb-3 flex items-center gap-2 text-lg font-semibold text-slate-900">
+          <UserCheck className="h-5 w-5 text-brand-600" /> Invitation
         </h2>
         <div className="grid gap-3 sm:grid-cols-2">
           <div>
@@ -142,10 +142,10 @@ export function AdminPage() {
 
       {/* Demandes d'inscription */}
       <div className="card p-5">
-        <h2 className="mb-3 flex items-center gap-2 text-lg font-semibold text-slate-100">
-          <Shield className="h-5 w-5 text-brand-400" /> Demandes d'inscription
+        <h2 className="mb-3 flex items-center gap-2 text-lg font-semibold text-slate-900">
+          <Shield className="h-5 w-5 text-brand-600" /> Demandes d'inscription
           {(requests?.length ?? 0) > 0 && (
-            <span className="badge bg-brand-500/15 text-brand-300">{requests!.length}</span>
+            <span className="badge bg-brand-500/15 text-brand-700">{requests!.length}</span>
           )}
         </h2>
         {!requests?.length ? (
@@ -156,7 +156,7 @@ export function AdminPage() {
               <div key={r.id} className="flex items-center gap-3 rounded-xl bg-surface-850/50 p-3">
                 <Avatar name={r.pseudo} src={r.photoUrl} size="md" />
                 <div className="flex-1">
-                  <p className="font-medium text-slate-100">{r.pseudo}</p>
+                  <p className="font-medium text-slate-900">{r.pseudo}</p>
                   <p className="text-xs text-slate-500">{r.user.name} · {r.user.email}</p>
                 </div>
                 <button
@@ -181,13 +181,13 @@ export function AdminPage() {
 
       {/* Membres */}
       <div className="card p-5">
-        <h2 className="mb-3 text-lg font-semibold text-slate-100">Membres</h2>
+        <h2 className="mb-3 text-lg font-semibold text-slate-900">Membres</h2>
         <div className="space-y-2">
           {players?.map((p) => (
             <div key={p.id} className="flex items-center gap-3 rounded-xl bg-surface-850/50 p-3">
               <Avatar name={p.pseudo} src={p.photoUrl} size="md" />
               <div className="flex-1">
-                <p className="font-medium text-slate-100">{p.pseudo}</p>
+                <p className="font-medium text-slate-900">{p.pseudo}</p>
                 <p className="text-xs text-slate-500">
                   {p.role === 'ADMIN' ? 'Administrateur' : 'Joueur'} · {p.matchesPlayed} matchs
                 </p>
@@ -223,7 +223,7 @@ export function AdminPage() {
 
       {/* Paramètres du groupe */}
       <div className="card p-5">
-        <h2 className="mb-3 text-lg font-semibold text-slate-100">Paramètres du groupe</h2>
+        <h2 className="mb-3 text-lg font-semibold text-slate-900">Paramètres du groupe</h2>
         <label className="label">Nom du groupe</label>
         <div className="flex gap-2">
           <input
@@ -244,8 +244,8 @@ export function AdminPage() {
 
       {/* Journal d'audit */}
       <div className="card p-5">
-        <h2 className="mb-3 flex items-center gap-2 text-lg font-semibold text-slate-100">
-          <ScrollText className="h-5 w-5 text-brand-400" /> Journal des actions
+        <h2 className="mb-3 flex items-center gap-2 text-lg font-semibold text-slate-900">
+          <ScrollText className="h-5 w-5 text-brand-600" /> Journal des actions
         </h2>
         {!audit?.length ? (
           <EmptyState icon={ScrollText} title="Aucune action" />
@@ -253,8 +253,8 @@ export function AdminPage() {
           <div className="max-h-80 space-y-1.5 overflow-y-auto">
             {audit.map((log) => (
               <div key={log.id} className="flex items-center gap-3 rounded-lg px-2 py-1.5 text-sm">
-                <span className="font-mono text-xs text-brand-400">{log.action}</span>
-                <span className="text-slate-400">{log.entity}</span>
+                <span className="font-mono text-xs text-brand-600">{log.action}</span>
+                <span className="text-slate-600">{log.entity}</span>
                 <span className="ml-auto text-xs text-slate-500">
                   {log.actor?.name ?? 'Système'} · {formatDateTime(log.createdAt)}
                 </span>

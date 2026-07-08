@@ -72,21 +72,21 @@ export function HeadToHeadPage() {
             <div className="flex items-center justify-between gap-4">
               <div className="flex flex-1 flex-col items-center gap-2">
                 <Avatar name={data.playerA.pseudo} src={data.playerA.photoUrl} size="xl" />
-                <p className="font-semibold text-slate-100">{data.playerA.pseudo}</p>
-                <p className="text-4xl font-bold text-brand-400">{data.playerA.wins}</p>
+                <p className="font-semibold text-slate-900">{data.playerA.pseudo}</p>
+                <p className="text-4xl font-bold text-brand-600">{data.playerA.wins}</p>
                 <p className="text-xs text-slate-500">{data.playerA.winRate}% · {data.playerA.goals} buts</p>
               </div>
 
               <div className="flex flex-col items-center gap-1">
                 <span className="text-xs uppercase text-slate-500">Confrontations</span>
-                <span className="text-3xl font-bold text-slate-100">{data.totalMatches}</span>
+                <span className="text-3xl font-bold text-slate-900">{data.totalMatches}</span>
                 <span className="text-xs text-slate-500">{data.draws} nul(s)</span>
               </div>
 
               <div className="flex flex-1 flex-col items-center gap-2">
                 <Avatar name={data.playerB.pseudo} src={data.playerB.photoUrl} size="xl" />
-                <p className="font-semibold text-slate-100">{data.playerB.pseudo}</p>
-                <p className="text-4xl font-bold text-brand-400">{data.playerB.wins}</p>
+                <p className="font-semibold text-slate-900">{data.playerB.pseudo}</p>
+                <p className="text-4xl font-bold text-brand-600">{data.playerB.wins}</p>
                 <p className="text-xs text-slate-500">{data.playerB.winRate}% · {data.playerB.goals} buts</p>
               </div>
             </div>
@@ -110,7 +110,7 @@ export function HeadToHeadPage() {
             )}
           </div>
 
-          <h2 className="mb-3 text-lg font-semibold text-slate-100">Historique complet</h2>
+          <h2 className="mb-3 text-lg font-semibold text-slate-900">Historique complet</h2>
           {data.matches.length === 0 ? (
             <EmptyState icon={Swords} title="Aucune confrontation" description="Ces deux joueurs ne se sont jamais affrontés." />
           ) : (

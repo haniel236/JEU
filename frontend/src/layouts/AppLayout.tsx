@@ -35,11 +35,11 @@ function Sidebar({ groupName, onNavigate }: { groupName: string; onNavigate?: ()
   return (
     <div className="flex h-full flex-col gap-1 p-4">
       <div className="mb-4 flex items-center gap-2.5 px-2">
-        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-500/15 text-brand-400">
+        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-500/15 text-brand-600">
           <Trophy className="h-5 w-5" />
         </div>
         <div className="min-w-0">
-          <p className="truncate text-sm font-bold text-slate-100">{groupName}</p>
+          <p className="truncate text-sm font-bold text-slate-900">{groupName}</p>
           <p className="text-[11px] text-slate-500">Zéro Mensonge</p>
         </div>
       </div>

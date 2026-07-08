@@ -82,12 +82,12 @@ export function NotificationsPage() {
                   !n.read && 'border-brand-600/40 bg-brand-500/5',
                 )}
               >
-                <div className="rounded-xl bg-surface-800 p-2.5 text-brand-400">
+                <div className="rounded-xl bg-surface-800 p-2.5 text-brand-600">
                   <Icon className="h-5 w-5" />
                 </div>
                 <div className="flex-1">
-                  <p className="font-medium text-slate-100">{n.title}</p>
-                  <p className="text-sm text-slate-400">{n.message}</p>
+                  <p className="font-medium text-slate-900">{n.title}</p>
+                  <p className="text-sm text-slate-600">{n.message}</p>
                   <p className="mt-1 text-xs text-slate-500">{relativeTime(n.createdAt)}</p>
                 </div>
                 {!n.read && <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-brand-400" />}

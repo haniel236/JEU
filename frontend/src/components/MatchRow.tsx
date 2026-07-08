@@ -11,7 +11,7 @@ export function MatchRow({ match }: { match: Match }) {
     <div className="flex items-center gap-3 rounded-xl border border-surface-700/60 bg-surface-850/50 p-3 transition-colors hover:border-brand-600/40">
       <div className="flex flex-1 items-center justify-end gap-2 text-right">
         <div className="min-w-0">
-          <p className={cn('truncate text-sm font-semibold', p1Win ? 'text-brand-300' : 'text-slate-200')}>
+          <p className={cn('truncate text-sm font-semibold', p1Win ? 'text-brand-700' : 'text-slate-800')}>
             {match.player1.pseudo}
           </p>
           <p className="truncate text-xs text-slate-500">{match.team1Name}</p>
@@ -21,11 +21,11 @@ export function MatchRow({ match }: { match: Match }) {
 
       <div className="flex flex-col items-center px-1">
         <div className="flex items-center gap-1.5 font-bold tabular-nums">
-          <span className={cn('text-lg', p1Win ? 'text-brand-400' : 'text-slate-300')}>
+          <span className={cn('text-lg', p1Win ? 'text-brand-600' : 'text-slate-700')}>
             {match.score1}
           </span>
-          <span className="text-slate-600">:</span>
-          <span className={cn('text-lg', p2Win ? 'text-brand-400' : 'text-slate-300')}>
+          <span className="text-slate-400">:</span>
+          <span className={cn('text-lg', p2Win ? 'text-brand-600' : 'text-slate-700')}>
             {match.score2}
           </span>
         </div>
@@ -37,7 +37,7 @@ export function MatchRow({ match }: { match: Match }) {
       <div className="flex flex-1 items-center gap-2">
         <Avatar name={match.player2.pseudo} src={match.player2.photoUrl} size="sm" />
         <div className="min-w-0">
-          <p className={cn('truncate text-sm font-semibold', p2Win ? 'text-brand-300' : 'text-slate-200')}>
+          <p className={cn('truncate text-sm font-semibold', p2Win ? 'text-brand-700' : 'text-slate-800')}>
             {match.player2.pseudo}
           </p>
           <p className="truncate text-xs text-slate-500">{match.team2Name}</p>

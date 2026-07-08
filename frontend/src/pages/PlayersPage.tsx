@@ -57,9 +57,9 @@ export function PlayersPage() {
                 <Avatar name={p.pseudo} src={p.photoUrl} size="lg" />
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
-                    <p className="truncate font-semibold text-slate-100">{p.pseudo}</p>
+                    <p className="truncate font-semibold text-slate-900">{p.pseudo}</p>
                     {p.role === 'ADMIN' && (
-                      <span className="badge bg-brand-500/15 text-brand-300">Admin</span>
+                      <span className="badge bg-brand-500/15 text-brand-700">Admin</span>
                     )}
                   </div>
                   <p className="truncate text-xs text-slate-500">
@@ -72,11 +72,11 @@ export function PlayersPage() {
               <div className="grid grid-cols-4 gap-2 border-t border-surface-700 pt-3 text-center">
                 <div>
                   <p className="text-xs text-slate-500">Matchs</p>
-                  <p className="font-semibold text-slate-200">{p.matchesPlayed}</p>
+                  <p className="font-semibold text-slate-800">{p.matchesPlayed}</p>
                 </div>
                 <div>
                   <p className="text-xs text-slate-500">V</p>
-                  <p className="font-semibold text-brand-400">{p.wins}</p>
+                  <p className="font-semibold text-brand-600">{p.wins}</p>
                 </div>
                 <div>
                   <p className="text-xs text-slate-500">D</p>
@@ -84,7 +84,7 @@ export function PlayersPage() {
                 </div>
                 <div>
                   <p className="text-xs text-slate-500">%</p>
-                  <p className="font-semibold text-slate-200">{p.winRate}</p>
+                  <p className="font-semibold text-slate-800">{p.winRate}</p>
                 </div>
               </div>
             </Link>

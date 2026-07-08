@@ -4,33 +4,36 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Thème sombre + vert principal
+        // Thème clair + vert principal
         brand: {
-          50: '#e9fbef',
-          100: '#c9f5d8',
-          200: '#95ecb5',
-          300: '#5ade8e',
-          400: '#28c96a',
-          500: '#10b04f',
-          600: '#059140',
-          700: '#067336',
-          800: '#0a5a2e',
-          900: '#0b4a28',
+          50: '#ecfdf3',
+          100: '#d1fadf',
+          200: '#a6f4c5',
+          300: '#6ce9a6',
+          400: '#32d583',
+          500: '#12b76a',
+          600: '#039855',
+          700: '#027a48',
+          800: '#05603a',
+          900: '#054f31',
         },
+        // Neutres clairs (du plus clair au plus soutenu)
         surface: {
-          950: '#070b09',
-          900: '#0b1210',
-          850: '#0f1815',
-          800: '#131f1b',
-          700: '#1a2a24',
-          600: '#24382f',
+          950: '#f4f8f6',
+          900: '#ffffff',
+          850: '#f9fbfa',
+          800: '#eef3f0',
+          700: '#e4ebe7',
+          600: '#d3ddd7',
         },
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
       },
       boxShadow: {
-        glow: '0 0 24px -6px rgba(40, 201, 106, 0.45)',
+        glow: '0 12px 32px -12px rgba(3, 152, 85, 0.35)',
+        card: '0 1px 2px rgba(16, 24, 40, 0.04), 0 12px 28px -16px rgba(16, 24, 40, 0.18)',
+        'card-hover': '0 8px 24px -8px rgba(3, 152, 85, 0.22)',
       },
       keyframes: {
         'fade-in': {

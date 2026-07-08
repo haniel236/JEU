@@ -18,11 +18,11 @@ export function SelectGroupPage() {
     <div className="mx-auto flex min-h-screen max-w-2xl flex-col justify-center p-5">
       <div className="mb-6 flex items-center justify-between">
         <div className="flex items-center gap-2.5">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-500/15 text-brand-400">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-500/15 text-brand-600">
             <Trophy className="h-5 w-5" />
           </div>
           <div>
-            <p className="font-bold text-slate-50">Mes groupes</p>
+            <p className="font-bold text-slate-900">Mes groupes</p>
             <p className="text-xs text-slate-500">{user.name}</p>
           </div>
         </div>
@@ -46,12 +46,12 @@ export function SelectGroupPage() {
           >
             <Avatar name={m.group.name} src={m.group.logoUrl} size="lg" />
             <div className="flex-1">
-              <p className="font-semibold text-slate-100">{m.group.name}</p>
+              <p className="font-semibold text-slate-900">{m.group.name}</p>
               <p className="text-sm text-slate-500">
                 {m.role === 'ADMIN' ? 'Administrateur' : 'Joueur'} · @{m.pseudo}
               </p>
             </div>
-            <LogIn className="h-5 w-5 text-brand-400" />
+            <LogIn className="h-5 w-5 text-brand-600" />
           </button>
         ))}
 
@@ -59,14 +59,14 @@ export function SelectGroupPage() {
           <div key={m.id} className="card flex items-center gap-4 p-4 opacity-70">
             <Avatar name={m.group.name} src={m.group.logoUrl} size="lg" />
             <div className="flex-1">
-              <p className="font-semibold text-slate-100">{m.group.name}</p>
+              <p className="font-semibold text-slate-900">{m.group.name}</p>
               <p className="text-sm text-yellow-400">Demande en attente de validation</p>
             </div>
           </div>
         ))}
 
         {accepted.length === 0 && pending.length === 0 && (
-          <div className="card p-6 text-center text-slate-400">
+          <div className="card p-6 text-center text-slate-600">
             Vous n'appartenez à aucun groupe pour le moment.
           </div>
         )}

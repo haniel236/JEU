@@ -40,7 +40,7 @@ export function RankingsPage() {
             onClick={() => setPeriod(p.key)}
             className={cn(
               'rounded-lg px-4 py-2 text-sm font-medium transition-colors',
-              period === p.key ? 'bg-brand-500 text-surface-950' : 'text-slate-400 hover:text-slate-200',
+              period === p.key ? 'bg-brand-500 text-surface-950' : 'text-slate-600 hover:text-slate-800',
             )}
           >
             {p.label}
@@ -72,15 +72,15 @@ export function RankingsPage() {
               </div>
               <div className="col-span-5 flex items-center gap-3">
                 <Avatar name={row.pseudo} src={row.photoUrl} size="sm" />
-                <span className="truncate font-medium text-slate-200">{row.pseudo}</span>
+                <span className="truncate font-medium text-slate-800">{row.pseudo}</span>
               </div>
-              <div className="col-span-2 text-center text-slate-300">{row.matchesPlayed}</div>
+              <div className="col-span-2 text-center text-slate-700">{row.matchesPlayed}</div>
               <div className="col-span-2 text-center text-sm">
-                <span className="text-brand-400">{row.wins}</span>
-                <span className="text-slate-600"> / </span>
+                <span className="text-brand-600">{row.wins}</span>
+                <span className="text-slate-400"> / </span>
                 <span className="text-red-400">{row.losses}</span>
               </div>
-              <div className="col-span-2 text-right font-semibold text-slate-100">{row.winRate}%</div>
+              <div className="col-span-2 text-right font-semibold text-slate-900">{row.winRate}%</div>
             </Link>
           ))}
         </div>

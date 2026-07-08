@@ -66,21 +66,21 @@ export function HistoryPage() {
                   <div className="col-span-1 flex items-center gap-2 sm:col-span-4">
                     <Avatar name={m.player1.pseudo} src={m.player1.photoUrl} size="sm" />
                     <div className="min-w-0">
-                      <p className={cn('truncate text-sm font-medium', p1Win ? 'text-brand-300' : 'text-slate-200')}>
+                      <p className={cn('truncate text-sm font-medium', p1Win ? 'text-brand-700' : 'text-slate-800')}>
                         {m.player1.pseudo}
                       </p>
                       <p className="truncate text-xs text-slate-500">{m.team1Name}</p>
                     </div>
                   </div>
                   <div className="col-span-1 text-center sm:col-span-2">
-                    <span className="font-bold tabular-nums text-slate-100">
+                    <span className="font-bold tabular-nums text-slate-900">
                       {m.score1} - {m.score2}
                     </span>
                   </div>
                   <div className="col-span-1 flex items-center gap-2 sm:col-span-4">
                     <Avatar name={m.player2.pseudo} src={m.player2.photoUrl} size="sm" />
                     <div className="min-w-0">
-                      <p className={cn('truncate text-sm font-medium', p2Win ? 'text-brand-300' : 'text-slate-200')}>
+                      <p className={cn('truncate text-sm font-medium', p2Win ? 'text-brand-700' : 'text-slate-800')}>
                         {m.player2.pseudo}
                       </p>
                       <p className="truncate text-xs text-slate-500">{m.team2Name}</p>
@@ -118,7 +118,7 @@ export function HistoryPage() {
               >
                 <ChevronLeft className="h-4 w-4" />
               </button>
-              <span className="text-sm text-slate-400">
+              <span className="text-sm text-slate-600">
                 Page {data.page} / {data.totalPages}
               </span>
               <button

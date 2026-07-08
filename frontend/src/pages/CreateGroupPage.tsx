@@ -50,7 +50,7 @@ export function CreateGroupPage() {
       footer={
         <>
           Déjà un compte ?{' '}
-          <Link to="/login" className="font-medium text-brand-400 hover:underline">
+          <Link to="/login" className="font-medium text-brand-600 hover:underline">
             Se connecter
           </Link>
         </>

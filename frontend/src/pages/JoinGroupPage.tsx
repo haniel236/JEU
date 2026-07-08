@@ -56,7 +56,7 @@ export function JoinGroupPage() {
       footer={
         <>
           Retour à l'{' '}
-          <Link to="/" className="font-medium text-brand-400 hover:underline">
+          <Link to="/" className="font-medium text-brand-600 hover:underline">
             accueil
           </Link>
         </>
@@ -80,7 +80,7 @@ export function JoinGroupPage() {
 
         {group && (
           <form onSubmit={onSubmit} className="animate-fade-in space-y-4 border-t border-surface-700 pt-4">
-            <div className="rounded-xl bg-brand-500/10 px-4 py-2.5 text-sm text-brand-300">
+            <div className="rounded-xl bg-brand-500/10 px-4 py-2.5 text-sm text-brand-700">
               Vous rejoignez : <span className="font-semibold">{group.name}</span>
             </div>
             <div className="grid grid-cols-2 gap-3">

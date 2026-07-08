@@ -58,10 +58,10 @@ export function DashboardPage() {
         {/* Top 10 */}
         <div className="card p-5">
           <div className="mb-4 flex items-center justify-between">
-            <h2 className="flex items-center gap-2 text-lg font-semibold text-slate-100">
-              <Trophy className="h-5 w-5 text-brand-400" /> Top 10
+            <h2 className="flex items-center gap-2 text-lg font-semibold text-slate-900">
+              <Trophy className="h-5 w-5 text-brand-600" /> Top 10
             </h2>
-            <Link to={`/g/${groupId}/rankings`} className="text-sm text-brand-400 hover:underline">
+            <Link to={`/g/${groupId}/rankings`} className="text-sm text-brand-600 hover:underline">
               Classement complet
             </Link>
           </div>
@@ -79,9 +79,9 @@ export function DashboardPage() {
                 >
                   <RankBadge rank={p.rank} />
                   <Avatar name={p.pseudo} src={p.photoUrl} size="sm" />
-                  <span className="flex-1 truncate font-medium text-slate-200">{p.pseudo}</span>
-                  <span className="text-sm text-slate-400">{p.winRate}%</span>
-                  <span className="w-14 text-right text-sm font-semibold text-brand-400">
+                  <span className="flex-1 truncate font-medium text-slate-800">{p.pseudo}</span>
+                  <span className="text-sm text-slate-600">{p.winRate}%</span>
+                  <span className="w-14 text-right text-sm font-semibold text-brand-600">
                     {p.wins} V
                   </span>
                 </Link>
@@ -93,10 +93,10 @@ export function DashboardPage() {
         {/* Derniers matchs */}
         <div className="card p-5">
           <div className="mb-4 flex items-center justify-between">
-            <h2 className="flex items-center gap-2 text-lg font-semibold text-slate-100">
-              <History className="h-5 w-5 text-brand-400" /> Derniers matchs
+            <h2 className="flex items-center gap-2 text-lg font-semibold text-slate-900">
+              <History className="h-5 w-5 text-brand-600" /> Derniers matchs
             </h2>
-            <Link to={`/g/${groupId}/history`} className="text-sm text-brand-400 hover:underline">
+            <Link to={`/g/${groupId}/history`} className="text-sm text-brand-600 hover:underline">
               Tout l'historique
             </Link>
           </div>

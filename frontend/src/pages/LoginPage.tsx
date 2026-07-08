@@ -41,7 +41,7 @@ export function LoginPage() {
       footer={
         <>
           Pas encore de groupe ?{' '}
-          <Link to="/create-group" className="font-medium text-brand-400 hover:underline">
+          <Link to="/create-group" className="font-medium text-brand-600 hover:underline">
             Créer un groupe
           </Link>
         </>
