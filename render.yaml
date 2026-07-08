@@ -1,0 +1,44 @@
+services:
+  # API REST + temps réel (Node/Express/Prisma)
+  - type: web
+    name: zmj-backend
+    runtime: node
+    rootDir: backend
+    plan: free
+    buildCommand: npm install && npm run prisma:generate && npm run build
+    startCommand: npm run prisma:deploy && npm run start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      # Chaîne de connexion Supabase (Session pooler, port 5432).
+      # À définir dans le dashboard Render (Environment) — non versionnée.
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_ACCESS_SECRET
+        generateValue: true
+      - key: JWT_REFRESH_SECRET
+        generateValue: true
+      - key: JWT_ACCESS_EXPIRES_IN
+        value: 15m
+      - key: JWT_REFRESH_EXPIRES_IN
+        value: 7d
+      # URL du frontend (à renseigner après le 1er déploiement du static site).
+      - key: CLIENT_URL
+        sync: false
+
+  # Interface React/Vite (site statique)
+  - type: web
+    name: zmj-frontend
+    runtime: static
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    envVars:
+      # URL publique du backend (ex. https://zmj-backend.onrender.com)
+      - key: VITE_API_URL
+        sync: false
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
