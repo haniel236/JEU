@@ -1,0 +1,173 @@
+// Schéma Prisma — Zéro Mensonge dans le Jeu
+// "Les statistiques ne mentent jamais."
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  PLAYER
+}
+
+enum MembershipStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+enum NotificationType {
+  NEW_MATCH
+  NEW_PLAYER
+  NEW_NUMBER_ONE
+  RANKING_CHANGED
+  NEW_RECORD
+  JOIN_REQUEST
+  REQUEST_ACCEPTED
+  REQUEST_REJECTED
+}
+
+/// Compte utilisateur global (identifié par e-mail).
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  memberships   Membership[]
+  createdGroups Group[]        @relation("GroupCreator")
+  notifications Notification[]
+  auditLogs     AuditLog[]
+
+  @@index([email])
+}
+
+/// Groupe = communauté privée et indépendante.
+model Group {
+  id         String   @id @default(cuid())
+  name       String
+  slug       String   @unique
+  inviteCode String   @unique
+  logoUrl    String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  creatorId String
+  creator   User   @relation("GroupCreator", fields: [creatorId], references: [id])
+
+  memberships   Membership[]
+  matches       Match[]
+  notifications Notification[]
+  auditLogs     AuditLog[]
+
+  @@index([slug])
+  @@index([inviteCode])
+}
+
+/// Appartenance d'un utilisateur à un groupe (données spécifiques au groupe).
+model Membership {
+  id       String           @id @default(cuid())
+  pseudo   String
+  photoUrl String?
+  role     Role             @default(PLAYER)
+  status   MembershipStatus @default(PENDING)
+  joinedAt DateTime         @default(now())
+
+  // Statistiques dénormalisées (tout-temps) mises à jour de façon incrémentale.
+  matchesPlayed Int @default(0)
+  wins          Int @default(0)
+  losses        Int @default(0)
+  draws         Int @default(0)
+
+  userId  String
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  groupId String
+  group   Group  @relation(fields: [groupId], references: [id], onDelete: Cascade)
+
+  matchesAsPlayer1 Match[] @relation("Player1")
+  matchesAsPlayer2 Match[] @relation("Player2")
+  matchesWon       Match[] @relation("Winner")
+  matchesCreated   Match[] @relation("MatchCreator")
+
+  @@unique([userId, groupId])
+  @@index([groupId, status])
+  @@index([groupId, wins])
+}
+
+/// Match 1 contre 1.
+model Match {
+  id        String   @id @default(cuid())
+  team1Name String
+  team2Name String
+  score1    Int
+  score2    Int
+  playedAt  DateTime @default(now())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  groupId String
+  group   Group  @relation(fields: [groupId], references: [id], onDelete: Cascade)
+
+  player1Id String
+  player1   Membership @relation("Player1", fields: [player1Id], references: [id], onDelete: Cascade)
+  player2Id String
+  player2   Membership @relation("Player2", fields: [player2Id], references: [id], onDelete: Cascade)
+
+  // null = match nul
+  winnerId String?
+  winner   Membership? @relation("Winner", fields: [winnerId], references: [id])
+
+  createdById String?
+  createdBy   Membership? @relation("MatchCreator", fields: [createdById], references: [id])
+
+  @@index([groupId, playedAt])
+  @@index([groupId, player1Id])
+  @@index([groupId, player2Id])
+  @@index([winnerId])
+}
+
+/// Notification (temps réel via Socket.IO).
+model Notification {
+  id        String           @id @default(cuid())
+  type      NotificationType
+  title     String
+  message   String
+  data      Json?
+  read      Boolean          @default(false)
+  createdAt DateTime         @default(now())
+
+  groupId String
+  group   Group  @relation(fields: [groupId], references: [id], onDelete: Cascade)
+
+  // Destinataire (null = diffusée à tout le groupe)
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([groupId, createdAt])
+  @@index([userId, read])
+}
+
+/// Journal des actions importantes.
+model AuditLog {
+  id        String   @id @default(cuid())
+  action    String
+  entity    String
+  entityId  String?
+  metadata  Json?
+  createdAt DateTime @default(now())
+
+  groupId String
+  group   Group  @relation(fields: [groupId], references: [id], onDelete: Cascade)
+
+  actorId String?
+  actor   User?   @relation(fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([groupId, createdAt])
+}
