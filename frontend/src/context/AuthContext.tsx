@@ -44,6 +44,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     async (email: string, password: string) => {
       const res = await authApi.login({ email, password });
       setSession(res.accessToken, res.user);
+      setUser(await authApi.me());
     },
     [setSession],
   );
@@ -52,6 +53,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     async (name: string, email: string, password: string) => {
       const res = await authApi.register({ name, email, password });
       setSession(res.accessToken, res.user);
+      setUser(await authApi.me());
     },
     [setSession],
   );
