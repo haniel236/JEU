@@ -121,6 +121,16 @@ export const notificationApi = {
     api.post(`/groups/${groupId}/notifications/read-all`).then((r) => r.data),
 };
 
+// --- Notifications push (Web Push) ---
+export const pushApi = {
+  publicKey: () =>
+    api.get<{ publicKey: string | null }>('/push/public-key').then((r) => r.data),
+  subscribe: (subscription: PushSubscriptionJSON) =>
+    api.post('/push/subscribe', { subscription }).then((r) => r.data),
+  unsubscribe: (endpoint: string) =>
+    api.post('/push/unsubscribe', { endpoint }).then((r) => r.data),
+};
+
 // --- Administration ---
 export const adminApi = {
   requests: (groupId: string) =>

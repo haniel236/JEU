@@ -7,6 +7,11 @@
     color-scheme: light;
   }
 
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
   html,
   body,
   #root {
@@ -19,10 +24,31 @@
       radial-gradient(1100px 600px at 100% -10%, rgba(18, 183, 106, 0.10), transparent),
       radial-gradient(900px 520px at -10% 15%, rgba(50, 213, 131, 0.08), transparent);
     background-attachment: fixed;
+    overflow-y: scroll;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Défilement plus fluide et sans surlignage bleu au tap (mobile/Android). */
+  a,
+  button {
+    -webkit-tap-highlight-color: transparent;
   }
 
   * {
     @apply border-surface-700;
+  }
+
+  /* Accessibilité : respecte la préférence « animations réduites ». */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 
   ::-webkit-scrollbar {
