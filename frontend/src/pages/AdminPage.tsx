@@ -11,8 +11,15 @@ import {
   ShieldCheck,
   ShieldOff,
   UserCheck,
+  UserPlus,
+  UserX,
   ScrollText,
+  Swords,
+  Pencil,
+  Settings,
+  Sparkles,
 } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { useGroup } from '../context/GroupContext.js';
 import { useAuth } from '../context/AuthContext.js';
 import { adminApi, groupApi, playerApi } from '../services/endpoints.js';
@@ -21,7 +28,28 @@ import { PageHeader } from '../components/PageHeader.js';
 import { EmptyState } from '../components/EmptyState.js';
 import { Avatar } from '../components/Avatar.js';
 import { formatDateTime } from '../utils/format.js';
+import { describeAudit, type AuditTone } from '../utils/audit.js';
+import { cn } from '../utils/cn.js';
 import type { Role } from '../types/index.js';
+
+const auditIcons: Record<string, LucideIcon> = {
+  GROUP_CREATED: Sparkles,
+  GROUP_UPDATED: Settings,
+  JOIN_REQUESTED: UserPlus,
+  REQUEST_ACCEPTED: UserCheck,
+  REQUEST_REJECTED: UserX,
+  ROLE_CHANGED: ShieldCheck,
+  PLAYER_REMOVED: Trash2,
+  MATCH_CREATED: Swords,
+  MATCH_UPDATED: Pencil,
+  MATCH_DELETED: Trash2,
+};
+
+const auditToneClass: Record<AuditTone, string> = {
+  positive: 'bg-brand-500/15 text-brand-600',
+  danger: 'bg-red-500/15 text-red-400',
+  neutral: 'bg-surface-800 text-slate-500',
+};
 
 export function AdminPage() {
   const { groupId, isAdmin } = useGroup();
@@ -251,15 +279,24 @@ export function AdminPage() {
           <EmptyState icon={ScrollText} title="Aucune action" />
         ) : (
           <div className="max-h-80 space-y-1.5 overflow-y-auto">
-            {audit.map((log) => (
-              <div key={log.id} className="flex items-center gap-3 rounded-lg px-2 py-1.5 text-sm">
-                <span className="font-mono text-xs text-brand-600">{log.action}</span>
-                <span className="text-slate-600">{log.entity}</span>
-                <span className="ml-auto text-xs text-slate-500">
-                  {log.actor?.name ?? 'Système'} · {formatDateTime(log.createdAt)}
-                </span>
-              </div>
-            ))}
+            {audit.map((log) => {
+              const { label, tone } = describeAudit(log);
+              const Icon = auditIcons[log.action] ?? ScrollText;
+              return (
+                <div
+                  key={log.id}
+                  className="flex items-center gap-3 rounded-lg px-2 py-2 text-sm hover:bg-surface-850/50"
+                >
+                  <span className={cn('rounded-lg p-1.5', auditToneClass[tone])}>
+                    <Icon className="h-4 w-4" />
+                  </span>
+                  <span className="min-w-0 flex-1 truncate text-slate-800">{label}</span>
+                  <span className="shrink-0 text-xs text-slate-500">
+                    {formatDateTime(log.createdAt)}
+                  </span>
+                </div>
+              );
+            })}
           </div>
         )}
       </div>

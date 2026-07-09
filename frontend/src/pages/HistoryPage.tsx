@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { History, ChevronLeft, ChevronRight, Trash2 } from 'lucide-react';
 import { useGroup } from '../context/GroupContext.js';
@@ -20,6 +20,7 @@ export function HistoryPage() {
   const { data, isLoading } = useQuery({
     queryKey: ['matches', groupId, { page }],
     queryFn: () => matchApi.list(groupId, { page, pageSize: 15 }),
+    placeholderData: keepPreviousData,
   });
 
   const removeMutation = useMutation({

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { Trophy } from 'lucide-react';
 import { useGroup } from '../context/GroupContext.js';
 import { rankingApi } from '../services/endpoints.js';
@@ -27,6 +27,7 @@ export function RankingsPage() {
   const { data, isLoading } = useQuery({
     queryKey: ['rankings', groupId, period],
     queryFn: () => rankingApi.get(groupId, period),
+    placeholderData: keepPreviousData,
   });
 
   return (

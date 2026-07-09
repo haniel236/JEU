@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   Bell,
+  BellRing,
   Swords,
   UserPlus,
   Crown,
@@ -19,6 +21,12 @@ import { EmptyState } from '../components/EmptyState.js';
 import { CardSkeleton } from '../components/Skeleton.js';
 import { relativeTime } from '../utils/format.js';
 import { cn } from '../utils/cn.js';
+import {
+  notificationPermission,
+  notificationsSupported,
+  playNotificationSound,
+  requestNotificationPermission,
+} from '../utils/notify.js';
 import type { NotificationType } from '../types/index.js';
 
 const icons: Record<NotificationType, LucideIcon> = {
@@ -36,6 +44,13 @@ export function NotificationsPage() {
   const { groupId } = useGroup();
   const queryClient = useQueryClient();
   const { data, isLoading } = useNotifications(groupId);
+  const [permission, setPermission] = useState(notificationPermission());
+
+  const enableNotifications = async () => {
+    const result = await requestNotificationPermission();
+    setPermission(result);
+    if (result === 'granted') playNotificationSound();
+  };
 
   const markAll = useMutation({
     mutationFn: () => notificationApi.markAllRead(groupId),
@@ -60,6 +75,29 @@ export function NotificationsPage() {
           ) : undefined
         }
       />
+
+      {notificationsSupported() && permission !== 'granted' && (
+        <div className="card mb-4 flex flex-col gap-3 border-brand-600/30 bg-brand-500/5 p-4 sm:flex-row sm:items-center">
+          <div className="flex items-start gap-3">
+            <div className="rounded-xl bg-surface-800 p-2.5 text-brand-600">
+              <BellRing className="h-5 w-5" />
+            </div>
+            <div>
+              <p className="font-medium text-slate-900">Activer les notifications</p>
+              <p className="text-sm text-slate-600">
+                {permission === 'denied'
+                  ? 'Les notifications sont bloquées. Autorisez-les dans les réglages de votre navigateur.'
+                  : 'Recevez une alerte sonore et une notification à chaque nouveau match ou record.'}
+              </p>
+            </div>
+          </div>
+          {permission !== 'denied' && (
+            <button onClick={enableNotifications} className="btn-primary shrink-0 sm:ml-auto">
+              <BellRing className="h-4 w-4" /> Activer
+            </button>
+          )}
+        </div>
+      )}
 
       {isLoading ? (
         <div className="space-y-3">
