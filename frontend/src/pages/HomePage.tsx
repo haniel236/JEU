@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import {
-  Trophy,
   Zap,
   ShieldCheck,
   BarChart3,
@@ -8,7 +7,12 @@ import {
   Bell,
   Users,
   ArrowRight,
+  BookOpen,
+  Info,
+  Smartphone,
 } from 'lucide-react';
+import { PublicHeader } from '../components/PublicHeader.js';
+import { InstallButton } from '../components/InstallButton.js';
 
 const features = [
   { icon: Zap, title: 'Rapide', desc: 'Enregistrez un match en moins de 10 secondes.' },
@@ -21,23 +25,8 @@ const features = [
 
 export function HomePage() {
   return (
-    <div className="min-h-screen">
-      <header className="mx-auto flex max-w-6xl items-center justify-between p-5">
-        <div className="flex items-center gap-2.5">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-500/15 text-brand-600">
-            <Trophy className="h-5 w-5" />
-          </div>
-          <span className="text-lg font-bold text-slate-900">Zéro Mensonge</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <Link to="/login" className="btn-ghost">
-            Se connecter
-          </Link>
-          <Link to="/create-group" className="btn-primary">
-            Créer un groupe
-          </Link>
-        </div>
-      </header>
+    <div className="min-h-screen animate-fade-in">
+      <PublicHeader />
 
       {/* Hero */}
       <section className="mx-auto max-w-4xl px-5 py-16 text-center sm:py-24">
@@ -66,6 +55,55 @@ export function HomePage() {
           <Link to="/join-group" className="btn-secondary w-full px-6 py-3 text-base sm:w-auto">
             Rejoindre un groupe
           </Link>
+        </div>
+      </section>
+
+      {/* Accès rapides : Guide & À propos, mis en avant dès la première page */}
+      <section className="mx-auto max-w-5xl px-5">
+        <div className="grid gap-4 sm:grid-cols-2">
+          <Link to="/guide" className="card card-hover flex items-start gap-4 p-6">
+            <div className="inline-flex rounded-xl bg-brand-500/10 p-3 text-brand-600">
+              <BookOpen className="h-6 w-6" />
+            </div>
+            <div>
+              <h3 className="flex items-center gap-1 text-lg font-semibold text-slate-900">
+                Guide d'utilisation <ArrowRight className="h-4 w-4 text-brand-600" />
+              </h3>
+              <p className="mt-1 text-sm text-slate-600">
+                Créez un groupe, enregistrez vos matchs et suivez les classements — pas à pas.
+              </p>
+            </div>
+          </Link>
+          <Link to="/about" className="card card-hover flex items-start gap-4 p-6">
+            <div className="inline-flex rounded-xl bg-brand-500/10 p-3 text-brand-600">
+              <Info className="h-6 w-6" />
+            </div>
+            <div>
+              <h3 className="flex items-center gap-1 text-lg font-semibold text-slate-900">
+                À propos <ArrowRight className="h-4 w-4 text-brand-600" />
+              </h3>
+              <p className="mt-1 text-sm text-slate-600">
+                Notre mission, le concept « Zéro Mensonge » et comment l'app est construite.
+              </p>
+            </div>
+          </Link>
+        </div>
+
+        {/* Installation Android / PWA */}
+        <div className="card mt-4 flex flex-col items-center justify-between gap-4 p-6 sm:flex-row">
+          <div className="flex items-center gap-4">
+            <div className="inline-flex rounded-xl bg-brand-500/10 p-3 text-brand-600">
+              <Smartphone className="h-6 w-6" />
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold text-slate-900">Installez l'application</h3>
+              <p className="mt-1 text-sm text-slate-600">
+                Ajoutez « Zéro Mensonge » à votre écran d'accueil Android et recevez les
+                notifications.
+              </p>
+            </div>
+          </div>
+          <InstallButton className="w-full px-6 py-3 text-base sm:w-auto" />
         </div>
       </section>
 
@@ -118,6 +156,15 @@ export function HomePage() {
       </section>
 
       <footer className="border-t border-surface-800 py-6 text-center text-sm text-slate-500">
+        <div className="mb-3 flex items-center justify-center gap-4">
+          <Link to="/guide" className="hover:text-brand-600">
+            Guide d'utilisation
+          </Link>
+          <span className="text-slate-300">•</span>
+          <Link to="/about" className="hover:text-brand-600">
+            À propos
+          </Link>
+        </div>
         © 2026 — Conçu et développé par <span className="text-brand-600">haniel_dev</span>. Tous
         droits réservés.
       </footer>
