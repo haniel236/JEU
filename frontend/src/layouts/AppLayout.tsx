@@ -22,6 +22,24 @@ import { cn } from '../utils/cn.js';
 import { PageLoader } from '../components/Spinner.js';
 import { Topbar } from './Topbar.js';
 
+// Précharge le chunk de la page au survol/focus → navigation quasi instantanée.
+const prefetchers: Record<string, () => Promise<unknown>> = {
+  '': () => import('../pages/DashboardPage.js'),
+  record: () => import('../pages/RecordMatchPage.js'),
+  players: () => import('../pages/PlayersPage.js'),
+  history: () => import('../pages/HistoryPage.js'),
+  rankings: () => import('../pages/RankingsPage.js'),
+  'head-to-head': () => import('../pages/HeadToHeadPage.js'),
+  notifications: () => import('../pages/NotificationsPage.js'),
+  guide: () => import('../pages/GuidePage.js'),
+  about: () => import('../pages/AboutPage.js'),
+  admin: () => import('../pages/AdminPage.js'),
+};
+
+function prefetchRoute(to: string) {
+  void prefetchers[to]?.();
+}
+
 const navItems = [
   { to: '', label: 'Tableau de bord', icon: LayoutDashboard, end: true },
   { to: 'record', label: 'Enregistrer un match', icon: PlusCircle, end: false },
@@ -54,6 +72,8 @@ function Sidebar({ groupName, onNavigate }: { groupName: string; onNavigate?: ()
           to={`/g/${groupId}/${item.to}`.replace(/\/$/, '')}
           end={item.end}
           onClick={onNavigate}
+          onMouseEnter={() => prefetchRoute(item.to)}
+          onFocus={() => prefetchRoute(item.to)}
           className={({ isActive }) => cn('nav-link', isActive && 'nav-link-active')}
         >
           <item.icon className="h-5 w-5" />
@@ -65,6 +85,8 @@ function Sidebar({ groupName, onNavigate }: { groupName: string; onNavigate?: ()
         <NavLink
           to={`/g/${groupId}/admin`}
           onClick={onNavigate}
+          onMouseEnter={() => prefetchRoute('admin')}
+          onFocus={() => prefetchRoute('admin')}
           className={({ isActive }) => cn('nav-link', isActive && 'nav-link-active')}
         >
           <Shield className="h-5 w-5" />
