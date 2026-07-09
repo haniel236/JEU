@@ -11,6 +11,9 @@ import {
   Check,
   X,
   CheckCheck,
+  Volume2,
+  VolumeX,
+  Play,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { useGroup } from '../context/GroupContext.js';
@@ -20,7 +23,13 @@ import { PageHeader } from '../components/PageHeader.js';
 import { EmptyState } from '../components/EmptyState.js';
 import { CardSkeleton } from '../components/Skeleton.js';
 import { relativeTime } from '../utils/format.js';
-import { ensureNotificationPermission, primeAudio } from '../utils/notify.js';
+import {
+  ensureNotificationPermission,
+  primeAudio,
+  playNotificationSound,
+  isSoundEnabled,
+  setSoundEnabled,
+} from '../utils/notify.js';
 import { cn } from '../utils/cn.js';
 import type { AppNotification, NotificationType } from '../types/index.js';
 
@@ -29,17 +38,16 @@ interface NotificationsData {
   unread: number;
 }
 
-function EnableNotificationsBanner() {
+function NotificationControls() {
   const supported = typeof window !== 'undefined' && 'Notification' in window;
   const [permission, setPermission] = useState<NotificationPermission>(
     supported ? Notification.permission : 'denied',
   );
+  const [soundOn, setSoundOn] = useState(isSoundEnabled());
 
   useEffect(() => {
     if (supported) setPermission(Notification.permission);
   }, [supported]);
-
-  if (!supported || permission === 'granted') return null;
 
   return (
     <div className="card mb-4 flex flex-col gap-3 border-brand-600/40 bg-brand-500/5 p-4 sm:flex-row sm:items-center">
@@ -47,24 +55,55 @@ function EnableNotificationsBanner() {
         <BellRing className="h-5 w-5" />
       </div>
       <div className="flex-1">
-        <p className="font-medium text-slate-900">Activer les notifications</p>
+        <p className="font-medium text-slate-900">Alertes en temps réel</p>
         <p className="text-sm text-slate-600">
-          {permission === 'denied'
-            ? 'Les notifications sont bloquées. Autorisez-les dans les réglages de votre navigateur.'
-            : 'Recevez une alerte sonore et une bannière à chaque nouveau match ou demande.'}
+          {!supported
+            ? "Votre navigateur ne gère pas les notifications système, mais le son fonctionne."
+            : permission === 'denied'
+              ? 'Notifications bloquées : autorisez-les dans les réglages du navigateur. Le son reste disponible.'
+              : permission === 'granted'
+                ? 'Notifications activées : son + bannière à chaque nouveau match ou demande.'
+                : 'Recevez une alerte sonore et une bannière à chaque nouveau match ou demande.'}
         </p>
       </div>
-      {permission === 'default' && (
+      <div className="flex shrink-0 flex-wrap gap-2">
+        {supported && permission === 'default' && (
+          <button
+            onClick={async () => {
+              primeAudio();
+              setPermission(await ensureNotificationPermission());
+            }}
+            className="btn-primary"
+          >
+            Autoriser
+          </button>
+        )}
         <button
-          onClick={async () => {
+          onClick={() => {
             primeAudio();
-            setPermission(await ensureNotificationPermission());
+            playNotificationSound();
           }}
-          className="btn-primary shrink-0"
+          className="btn-secondary"
         >
-          Autoriser
+          <Play className="h-4 w-4" /> Tester le son
         </button>
-      )}
+        <button
+          onClick={() => {
+            const next = !soundOn;
+            setSoundEnabled(next);
+            setSoundOn(next);
+            if (next) {
+              primeAudio();
+              playNotificationSound();
+            }
+          }}
+          className="btn-ghost"
+          aria-label={soundOn ? 'Couper le son' : 'Activer le son'}
+        >
+          {soundOn ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
+          {soundOn ? 'Son activé' : 'Son coupé'}
+        </button>
+      </div>
     </div>
   );
 }
@@ -139,7 +178,7 @@ export function NotificationsPage() {
         }
       />
 
-      <EnableNotificationsBanner />
+      <NotificationControls />
 
       {isLoading ? (
         <div className="space-y-3">
