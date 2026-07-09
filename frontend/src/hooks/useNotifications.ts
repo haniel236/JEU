@@ -3,7 +3,22 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { notificationApi } from '../services/endpoints.js';
 import { getSocket } from '../services/socket.js';
+import {
+  announceNotification,
+  ensureNotificationPermission,
+  primeAudio,
+} from '../utils/notify.js';
 import type { AppNotification } from '../types/index.js';
+
+// Le hook peut être monté plusieurs fois (topbar + page) : on évite de traiter
+// deux fois la même notification (double toast / double son).
+const seenNotificationIds = new Set<string>();
+function markSeen(id: string): boolean {
+  if (seenNotificationIds.has(id)) return false;
+  seenNotificationIds.add(id);
+  setTimeout(() => seenNotificationIds.delete(id), 10_000);
+  return true;
+}
 
 export function useNotifications(groupId: string) {
   const queryClient = useQueryClient();
@@ -13,6 +28,22 @@ export function useNotifications(groupId: string) {
     queryFn: () => notificationApi.list(groupId),
     enabled: Boolean(groupId),
   });
+
+  // Débloque l'audio et demande la permission au premier geste utilisateur.
+  useEffect(() => {
+    void ensureNotificationPermission();
+
+    const onFirstGesture = () => {
+      primeAudio();
+      void ensureNotificationPermission();
+    };
+    window.addEventListener('pointerdown', onFirstGesture, { once: true });
+    window.addEventListener('keydown', onFirstGesture, { once: true });
+    return () => {
+      window.removeEventListener('pointerdown', onFirstGesture);
+      window.removeEventListener('keydown', onFirstGesture);
+    };
+  }, []);
 
   // Rejoint la room du groupe et écoute les notifications temps réel.
   useEffect(() => {
@@ -25,7 +56,10 @@ export function useNotifications(groupId: string) {
 
     const onNew = (notification: AppNotification) => {
       if (notification.groupId !== groupId) return;
-      toast(notification.title, { icon: '🔔' });
+      if (markSeen(notification.id)) {
+        toast(notification.title, { icon: '🔔' });
+        announceNotification(notification.title, notification.message);
+      }
       queryClient.invalidateQueries({ queryKey: ['notifications', groupId] });
       queryClient.invalidateQueries({ queryKey: ['dashboard', groupId] });
       queryClient.invalidateQueries({ queryKey: ['matches', groupId] });

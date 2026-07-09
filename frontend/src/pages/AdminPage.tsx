@@ -21,7 +21,15 @@ import { PageHeader } from '../components/PageHeader.js';
 import { EmptyState } from '../components/EmptyState.js';
 import { Avatar } from '../components/Avatar.js';
 import { formatDateTime } from '../utils/format.js';
+import { describeAudit } from '../utils/audit.js';
+import { cn } from '../utils/cn.js';
 import type { Role } from '../types/index.js';
+
+const auditToneClasses: Record<string, string> = {
+  positive: 'bg-brand-500/10 text-brand-600',
+  negative: 'bg-red-500/10 text-red-500',
+  neutral: 'bg-surface-800 text-slate-500',
+};
 
 export function AdminPage() {
   const { groupId, isAdmin } = useGroup();
@@ -250,16 +258,24 @@ export function AdminPage() {
         {!audit?.length ? (
           <EmptyState icon={ScrollText} title="Aucune action" />
         ) : (
-          <div className="max-h-80 space-y-1.5 overflow-y-auto">
-            {audit.map((log) => (
-              <div key={log.id} className="flex items-center gap-3 rounded-lg px-2 py-1.5 text-sm">
-                <span className="font-mono text-xs text-brand-600">{log.action}</span>
-                <span className="text-slate-600">{log.entity}</span>
-                <span className="ml-auto text-xs text-slate-500">
-                  {log.actor?.name ?? 'Système'} · {formatDateTime(log.createdAt)}
-                </span>
-              </div>
-            ))}
+          <div className="max-h-80 space-y-1 overflow-y-auto">
+            {audit.map((log) => {
+              const { label, Icon, tone } = describeAudit(log.action);
+              return (
+                <div
+                  key={log.id}
+                  className="flex items-center gap-3 rounded-lg px-2 py-2 text-sm transition-colors hover:bg-surface-850/60"
+                >
+                  <span className={cn('flex h-8 w-8 shrink-0 items-center justify-center rounded-lg', auditToneClasses[tone])}>
+                    <Icon className="h-4 w-4" />
+                  </span>
+                  <span className="font-medium text-slate-800">{label}</span>
+                  <span className="ml-auto whitespace-nowrap text-xs text-slate-500">
+                    {log.actor?.name ?? 'Système'} · {formatDateTime(log.createdAt)}
+                  </span>
+                </div>
+              );
+            })}
           </div>
         )}
       </div>

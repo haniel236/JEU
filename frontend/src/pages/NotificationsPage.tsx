@@ -1,6 +1,8 @@
+import { useEffect, useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   Bell,
+  BellRing,
   Swords,
   UserPlus,
   Crown,
@@ -18,8 +20,54 @@ import { PageHeader } from '../components/PageHeader.js';
 import { EmptyState } from '../components/EmptyState.js';
 import { CardSkeleton } from '../components/Skeleton.js';
 import { relativeTime } from '../utils/format.js';
+import { ensureNotificationPermission, primeAudio } from '../utils/notify.js';
 import { cn } from '../utils/cn.js';
-import type { NotificationType } from '../types/index.js';
+import type { AppNotification, NotificationType } from '../types/index.js';
+
+interface NotificationsData {
+  items: AppNotification[];
+  unread: number;
+}
+
+function EnableNotificationsBanner() {
+  const supported = typeof window !== 'undefined' && 'Notification' in window;
+  const [permission, setPermission] = useState<NotificationPermission>(
+    supported ? Notification.permission : 'denied',
+  );
+
+  useEffect(() => {
+    if (supported) setPermission(Notification.permission);
+  }, [supported]);
+
+  if (!supported || permission === 'granted') return null;
+
+  return (
+    <div className="card mb-4 flex flex-col gap-3 border-brand-600/40 bg-brand-500/5 p-4 sm:flex-row sm:items-center">
+      <div className="rounded-xl bg-brand-500/15 p-2.5 text-brand-600">
+        <BellRing className="h-5 w-5" />
+      </div>
+      <div className="flex-1">
+        <p className="font-medium text-slate-900">Activer les notifications</p>
+        <p className="text-sm text-slate-600">
+          {permission === 'denied'
+            ? 'Les notifications sont bloquées. Autorisez-les dans les réglages de votre navigateur.'
+            : 'Recevez une alerte sonore et une bannière à chaque nouveau match ou demande.'}
+        </p>
+      </div>
+      {permission === 'default' && (
+        <button
+          onClick={async () => {
+            primeAudio();
+            setPermission(await ensureNotificationPermission());
+          }}
+          className="btn-primary shrink-0"
+        >
+          Autoriser
+        </button>
+      )}
+    </div>
+  );
+}
 
 const icons: Record<NotificationType, LucideIcon> = {
   NEW_MATCH: Swords,
@@ -37,14 +85,44 @@ export function NotificationsPage() {
   const queryClient = useQueryClient();
   const { data, isLoading } = useNotifications(groupId);
 
+  const notificationsKey = ['notifications', groupId];
+
   const markAll = useMutation({
     mutationFn: () => notificationApi.markAllRead(groupId),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['notifications', groupId] }),
+    onMutate: async () => {
+      await queryClient.cancelQueries({ queryKey: notificationsKey });
+      const previous = queryClient.getQueryData<NotificationsData>(notificationsKey);
+      if (previous) {
+        queryClient.setQueryData<NotificationsData>(notificationsKey, {
+          items: previous.items.map((n) => ({ ...n, read: true })),
+          unread: 0,
+        });
+      }
+      return { previous };
+    },
+    onError: (_e, _v, ctx) => {
+      if (ctx?.previous) queryClient.setQueryData(notificationsKey, ctx.previous);
+    },
+    onSettled: () => queryClient.invalidateQueries({ queryKey: notificationsKey }),
   });
 
   const markOne = useMutation({
     mutationFn: (id: string) => notificationApi.markRead(groupId, id),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['notifications', groupId] }),
+    onMutate: async (id) => {
+      await queryClient.cancelQueries({ queryKey: notificationsKey });
+      const previous = queryClient.getQueryData<NotificationsData>(notificationsKey);
+      if (previous) {
+        queryClient.setQueryData<NotificationsData>(notificationsKey, {
+          items: previous.items.map((n) => (n.id === id ? { ...n, read: true } : n)),
+          unread: Math.max(0, previous.unread - 1),
+        });
+      }
+      return { previous };
+    },
+    onError: (_e, _v, ctx) => {
+      if (ctx?.previous) queryClient.setQueryData(notificationsKey, ctx.previous);
+    },
+    onSettled: () => queryClient.invalidateQueries({ queryKey: notificationsKey }),
   });
 
   return (
@@ -60,6 +138,8 @@ export function NotificationsPage() {
           ) : undefined
         }
       />
+
+      <EnableNotificationsBanner />
 
       {isLoading ? (
         <div className="space-y-3">
