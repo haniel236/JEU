@@ -7,6 +7,7 @@ import { useAuth } from '../context/AuthContext.js';
 import { useNotifications } from '../hooks/useNotifications.js';
 import { searchApi } from '../services/endpoints.js';
 import { Avatar } from '../components/Avatar.js';
+import { SoundToggle } from '../components/SoundToggle.js';
 import { relativeTime } from '../utils/format.js';
 import { cn } from '../utils/cn.js';
 
@@ -219,6 +220,7 @@ export function Topbar({ onMenuClick, menuIcon }: { onMenuClick: () => void; men
       </button>
       <GlobalSearch />
       <div className="ml-auto flex items-center gap-1.5">
+        <SoundToggle />
         <NotificationBell />
         <UserMenu />
       </div>

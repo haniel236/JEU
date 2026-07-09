@@ -20,6 +20,7 @@ import { useGroup } from '../context/GroupContext.js';
 import { notificationApi } from '../services/endpoints.js';
 import { useNotifications } from '../hooks/useNotifications.js';
 import { PageHeader } from '../components/PageHeader.js';
+import { PushToggle } from '../components/PushToggle.js';
 import { EmptyState } from '../components/EmptyState.js';
 import { CardSkeleton } from '../components/Skeleton.js';
 import { relativeTime } from '../utils/format.js';
@@ -179,6 +180,8 @@ export function NotificationsPage() {
       />
 
       <NotificationControls />
+
+      <PushToggle />
 
       {isLoading ? (
         <div className="space-y-3">

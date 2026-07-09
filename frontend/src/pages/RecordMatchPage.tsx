@@ -6,6 +6,7 @@ import { PlusCircle, Minus, Plus, Trophy } from 'lucide-react';
 import { useGroup } from '../context/GroupContext.js';
 import { matchApi, playerApi } from '../services/endpoints.js';
 import { extractError } from '../services/api.js';
+import { playSound } from '../utils/sound.js';
 import { PageHeader } from '../components/PageHeader.js';
 import { Spinner } from '../components/Spinner.js';
 import { cn } from '../utils/cn.js';
@@ -74,6 +75,7 @@ export function RecordMatchPage() {
         score2,
       }),
     onSuccess: () => {
+      playSound(score1 === score2 ? 'success' : 'victory');
       toast.success('Match enregistré !');
       queryClient.invalidateQueries({ queryKey: ['dashboard', groupId] });
       queryClient.invalidateQueries({ queryKey: ['matches', groupId] });
@@ -81,7 +83,10 @@ export function RecordMatchPage() {
       queryClient.invalidateQueries({ queryKey: ['rankings', groupId] });
       navigate(`/g/${groupId}/history`);
     },
-    onError: (err) => toast.error(extractError(err)),
+    onError: (err) => {
+      playSound('error');
+      toast.error(extractError(err));
+    },
   });
 
   const onSubmit = (e: React.FormEvent) => {

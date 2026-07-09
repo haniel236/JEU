@@ -8,7 +8,10 @@ import {
   Bell,
   Users,
   ArrowRight,
+  Smartphone,
 } from 'lucide-react';
+import { InstallButton } from '../components/InstallButton.js';
+import { SoundToggle } from '../components/SoundToggle.js';
 
 const features = [
   { icon: Zap, title: 'Rapide', desc: 'Enregistrez un match en moins de 10 secondes.' },
@@ -30,6 +33,8 @@ export function HomePage() {
           <span className="text-lg font-bold text-slate-900">Zéro Mensonge</span>
         </div>
         <div className="flex items-center gap-2">
+          <SoundToggle />
+          <InstallButton className="!hidden sm:!inline-flex" />
           <Link to="/login" className="btn-ghost">
             Se connecter
           </Link>
@@ -66,6 +71,25 @@ export function HomePage() {
           <Link to="/join-group" className="btn-secondary w-full px-6 py-3 text-base sm:w-auto">
             Rejoindre un groupe
           </Link>
+        </div>
+      </section>
+
+      {/* Installation Android / PWA */}
+      <section className="mx-auto max-w-5xl px-5">
+        <div className="card flex flex-col items-center justify-between gap-4 p-6 sm:flex-row">
+          <div className="flex items-center gap-4">
+            <div className="inline-flex rounded-xl bg-brand-500/10 p-3 text-brand-600">
+              <Smartphone className="h-6 w-6" />
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold text-slate-900">Installez l'application</h3>
+              <p className="mt-1 text-sm text-slate-600">
+                Ajoutez « Zéro Mensonge » à votre écran d'accueil Android et recevez les
+                notifications push.
+              </p>
+            </div>
+          </div>
+          <InstallButton className="w-full px-6 py-3 text-base sm:w-auto" />
         </div>
       </section>
 
