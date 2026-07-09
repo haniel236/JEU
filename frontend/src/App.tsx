@@ -14,6 +14,8 @@ import { RankingsPage } from './pages/RankingsPage.js';
 import { HeadToHeadPage } from './pages/HeadToHeadPage.js';
 import { NotificationsPage } from './pages/NotificationsPage.js';
 import { AdminPage } from './pages/AdminPage.js';
+import { GuidePage } from './pages/GuidePage.js';
+import { AboutPage } from './pages/AboutPage.js';
 
 export function App() {
   return (
@@ -34,6 +36,8 @@ export function App() {
           <Route path="rankings" element={<RankingsPage />} />
           <Route path="head-to-head" element={<HeadToHeadPage />} />
           <Route path="notifications" element={<NotificationsPage />} />
+          <Route path="guide" element={<GuidePage />} />
+          <Route path="about" element={<AboutPage />} />
           <Route path="admin" element={<AdminPage />} />
         </Route>
 

@@ -11,6 +11,8 @@ import {
   Shield,
   Menu,
   X,
+  BookOpen,
+  Info,
 } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { GroupProvider, useGroup } from '../context/GroupContext.js';
@@ -28,6 +30,8 @@ const navItems = [
   { to: 'rankings', label: 'Classements', icon: Trophy, end: false },
   { to: 'head-to-head', label: 'Face-à-Face', icon: Swords, end: false },
   { to: 'notifications', label: 'Notifications', icon: Bell, end: false },
+  { to: 'guide', label: "Guide d'utilisation", icon: BookOpen, end: false },
+  { to: 'about', label: 'À propos', icon: Info, end: false },
 ];
 
 function Sidebar({ groupName, onNavigate }: { groupName: string; onNavigate?: () => void }) {
