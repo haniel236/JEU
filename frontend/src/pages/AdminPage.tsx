@@ -25,6 +25,8 @@ import { describeAudit } from '../utils/audit.js';
 import { cn } from '../utils/cn.js';
 import type { Role } from '../types/index.js';
 
+type JoinRequest = Awaited<ReturnType<typeof adminApi.requests>>[number];
+
 const auditToneClasses: Record<string, string> = {
   positive: 'bg-brand-500/10 text-brand-600',
   negative: 'bg-red-500/10 text-red-500',
@@ -60,21 +62,39 @@ export function AdminPage() {
     queryClient.invalidateQueries({ queryKey: ['audit', groupId] });
   };
 
+  // Retire la demande de la liste immédiatement (mise à jour optimiste).
+  const removeRequestOptimistically = async (id: string) => {
+    await queryClient.cancelQueries({ queryKey: ['requests', groupId] });
+    const previous = queryClient.getQueryData<JoinRequest[]>(['requests', groupId]);
+    queryClient.setQueryData<JoinRequest[]>(['requests', groupId], (old) =>
+      old?.filter((r) => r.id !== id),
+    );
+    return { previous };
+  };
+
+  const restoreRequests = (ctx?: { previous?: JoinRequest[] }) => {
+    if (ctx?.previous) queryClient.setQueryData(['requests', groupId], ctx.previous);
+  };
+
   const acceptM = useMutation({
     mutationFn: (id: string) => adminApi.accept(groupId, id),
-    onSuccess: () => {
-      toast.success('Demande acceptée');
-      invalidate();
+    onMutate: removeRequestOptimistically,
+    onSuccess: () => toast.success('Demande acceptée'),
+    onError: (e, _id, ctx) => {
+      restoreRequests(ctx);
+      toast.error(extractError(e));
     },
-    onError: (e) => toast.error(extractError(e)),
+    onSettled: invalidate,
   });
   const rejectM = useMutation({
     mutationFn: (id: string) => adminApi.reject(groupId, id),
-    onSuccess: () => {
-      toast.success('Demande refusée');
-      invalidate();
+    onMutate: removeRequestOptimistically,
+    onSuccess: () => toast.success('Demande refusée'),
+    onError: (e, _id, ctx) => {
+      restoreRequests(ctx);
+      toast.error(extractError(e));
     },
-    onError: (e) => toast.error(extractError(e)),
+    onSettled: invalidate,
   });
   const roleM = useMutation({
     mutationFn: ({ id, role }: { id: string; role: Role }) => adminApi.setRole(groupId, id, role),
