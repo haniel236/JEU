@@ -9,7 +9,8 @@ services:
     runtime: node
     rootDir: backend
     plan: free
-    buildCommand: npm install && npm run prisma:generate && npm run build && npm run prisma:deploy
+    # --include=dev : NODE_ENV=production ferait sinon sauter les devDeps (tsc, prisma).
+    buildCommand: npm install --include=dev && npm run prisma:generate && npm run build && npm run prisma:deploy
     startCommand: npm run start
     healthCheckPath: /api/health
     envVars:
