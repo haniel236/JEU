@@ -1,5 +1,14 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  useLocation,
+} from 'react-router-dom';
 import { HomePage } from './pages/HomePage.js';
+import { GuidePage } from './pages/GuidePage.js';
+import { AboutPage } from './pages/AboutPage.js';
 import { LoginPage } from './pages/LoginPage.js';
 import { CreateGroupPage } from './pages/CreateGroupPage.js';
 import { JoinGroupPage } from './pages/JoinGroupPage.js';
@@ -15,11 +24,22 @@ import { HeadToHeadPage } from './pages/HeadToHeadPage.js';
 import { NotificationsPage } from './pages/NotificationsPage.js';
 import { AdminPage } from './pages/AdminPage.js';
 
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  }, [pathname]);
+  return null;
+}
+
 export function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/guide" element={<GuidePage />} />
+        <Route path="/about" element={<AboutPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/create-group" element={<CreateGroupPage />} />
         <Route path="/join-group" element={<JoinGroupPage />} />

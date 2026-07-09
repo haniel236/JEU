@@ -1,6 +1,7 @@
 import type { NotificationType, Prisma } from '@prisma/client';
 import { prisma } from '../config/prisma.js';
 import { getIO, groupRoom, userRoom } from '../socket/io.js';
+import { sendPushForNotification } from './push.service.js';
 
 interface CreateNotificationInput {
   groupId: string;
@@ -33,6 +34,11 @@ export async function createNotification(input: CreateNotificationInput) {
   } catch {
     // Socket non initialisé (ex: tests) — on ignore silencieusement.
   }
+
+  // Notification push (même application fermée) — sans bloquer la réponse.
+  void sendPushForNotification(notification).catch(() => {
+    // Échec d'envoi push ignoré silencieusement.
+  });
 
   return notification;
 }

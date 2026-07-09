@@ -3,6 +3,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { notificationApi } from '../services/endpoints.js';
 import { getSocket } from '../services/socket.js';
+import { playSound } from '../utils/sound.js';
 import type { AppNotification } from '../types/index.js';
 
 export function useNotifications(groupId: string) {
@@ -25,6 +26,7 @@ export function useNotifications(groupId: string) {
 
     const onNew = (notification: AppNotification) => {
       if (notification.groupId !== groupId) return;
+      playSound('notify');
       toast(notification.title, { icon: '🔔' });
       queryClient.invalidateQueries({ queryKey: ['notifications', groupId] });
       queryClient.invalidateQueries({ queryKey: ['dashboard', groupId] });
